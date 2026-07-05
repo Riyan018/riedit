@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Video Editor | Glass Aesthetic (Light Mode)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS for Glassmorphism & Animations -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc; /* Slate 50 base for Light Mode */
+            color: #1e293b; /* Slate 800 text */
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Orbs (Adjusted opacity for light mode) */
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(30, 136, 229, 0.25); /* Biru #1E88E5 */
+            top: -10%;
+            left: -10%;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(14, 165, 233, 0.2); /* Soft Sky Blue */
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: rgba(236, 72, 153, 0.2); /* Soft Pink */
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 1);
+            border-top: 1px solid rgba(255, 255, 255, 1);
+            border-left: 1px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+            border-color: rgba(255, 255, 255, 1);
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-btn-primary {
+            background: linear-gradient(45deg, rgba(30, 136, 229, 0.85), rgba(66, 165, 245, 0.85));
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .glass-btn-primary:hover {
+            background: linear-gradient(45deg, rgba(30, 136, 229, 1), rgba(66, 165, 245, 1));
+            box-shadow: 0 0 20px rgba(30, 136, 229, 0.3);
+            transform: scale(1.05);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(to right, #1E88E5, #64B5F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Scroll Reveal Utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen">
+
+    <!-- Background Orbs -->
+    <div class="bg-orb orb-1 fixed"></div>
+    <div class="bg-orb orb-2 fixed"></div>
+    <div class="bg-orb orb-3 fixed"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="glass mx-auto max-w-6xl mt-4 rounded-full px-6 py-3 flex justify-between items-center w-[95%] md:w-full">
+            <a href="#" class="flex items-center">
+                <img src="logoPNG.png" alt="RiEdit Logo" class="h-8 md:h-10 w-auto">
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#home" class="text-sm text-slate-600 hover:text-slate-900 transition">Beranda</a>
+                <a href="#portfolio" class="text-sm text-slate-600 hover:text-slate-900 transition">Karya</a>
+                <a href="#skills" class="text-sm text-slate-600 hover:text-slate-900 transition">Keahlian</a>
+                <a href="#contact" class="glass-btn-primary px-5 py-2 rounded-full text-sm font-medium">Hubungi Saya</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-slate-700 hover:text-slate-900" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden absolute top-20 left-[2.5%] w-[95%] glass rounded-2xl flex-col p-4 space-y-4 shadow-xl">
+            <a href="#home" class="text-slate-700 hover:text-slate-900 p-2 rounded-lg hover:bg-white/60" onclick="toggleMenu()">Beranda</a>
+            <a href="#portfolio" class="text-slate-700 hover:text-slate-900 p-2 rounded-lg hover:bg-white/60" onclick="toggleMenu()">Karya</a>
+            <a href="#skills" class="text-slate-700 hover:text-slate-900 p-2 rounded-lg hover:bg-white/60" onclick="toggleMenu()">Keahlian</a>
+            <a href="#contact" class="glass-btn-primary text-center py-2 rounded-lg font-medium" onclick="toggleMenu()">Hubungi Saya</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center pt-20 px-4 relative z-10">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+            
+            <!-- Text Content -->
+            <div class="space-y-6 reveal active">
+                <h1 class="text-5xl md:text-6xl font-semibold leading-tight text-slate-900">
+                    Membawa Cerita ke <br>
+                    <span class="text-gradient">Dimensi Visual</span>
+                </h1>
+                <p class="text-slate-600 text-lg max-w-lg leading-relaxed">
+                    Halo, saya Alex. Seorang Video Editor & Motion Designer yang berdedikasi menciptakan sinematik memukau, transisi mulus, dan penceritaan yang kuat.
+                </p>
+                <div class="flex gap-4 pt-4">
+                    <a href="#portfolio" class="glass-btn-primary px-8 py-3 rounded-full font-medium shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-play text-sm"></i> Lihat Karya
+                    </a>
+                    <a href="#contact" class="glass-btn px-8 py-3 rounded-full font-medium flex items-center gap-2">
+                        Mari Ngobrol
+                    </a>
+                </div>
+            </div>
+
+            <!-- Profile/Video Reel Preview (Glass Container) -->
+            <div class="relative reveal active delay-200">
+                <div class="glass-card rounded-3xl p-3 relative aspect-[4/5] overflow-hidden group">
+                    <!-- Placeholder Image (Pretend it's a looping showreel) -->
+                    <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Video Editor Setup" class="w-full h-full object-cover rounded-2xl opacity-90 group-hover:opacity-100 transition duration-500 grayscale group-hover:grayscale-0">
+                    
+                    <!-- Overlay Play Button -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 glass rounded-full flex items-center justify-center cursor-pointer group-hover:scale-110 transition duration-300 shadow-[0_0_20px_rgba(255,255,255,0.6)]">
+                            <i class="fa-solid fa-play text-2xl text-slate-800 ml-1"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Glass Badge -->
+                    <div class="absolute bottom-6 left-6 glass px-4 py-2 rounded-xl border border-white/80 backdrop-blur-md flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#1E88E5] flex items-center justify-center">
+                            <i class="fa-solid fa-clapperboard text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-600">Pengalaman</p>
+                            <p class="text-sm font-bold text-slate-900">5+ Tahun</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 px-4 relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-slate-900">Karya <span class="text-gradient">Terbaik</span></h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Koleksi project video editing mulai dari music video, commercial, hingga film pendek.</p>
+            </div>
+
+            <!-- Grid Gallery -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1 -->
+                <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer reveal">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a1a2a47b74eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Project 1" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition duration-300 flex items-center justify-center">
+                             <i class="fa-regular fa-circle-play text-4xl text-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-50 group-hover:scale-100"></i>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold text-[#1E88E5] uppercase tracking-wider">Music Video</span>
+                            <span class="text-xs text-slate-500">2023</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Neon Nights - The Band</h3>
+                        <p class="text-sm text-slate-600 line-clamp-2">Pengeditan ritmis dengan efek visual neon dan color grading cyberpunk.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer reveal delay-100">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Project 2" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition duration-300 flex items-center justify-center">
+                             <i class="fa-regular fa-circle-play text-4xl text-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-50 group-hover:scale-100"></i>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Commercial</span>
+                            <span class="text-xs text-slate-500">2023</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Lumina Tech Launch</h3>
+                        <p class="text-sm text-slate-600 line-clamp-2">Iklan komersial dinamis dengan motion graphics 3D dan transisi cepat.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer reveal delay-200">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Project 3" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition duration-300 flex items-center justify-center">
+                             <i class="fa-regular fa-circle-play text-4xl text-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-50 group-hover:scale-100"></i>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold text-pink-600 uppercase tracking-wider">Short Film</span>
+                            <span class="text-xs text-slate-500">2022</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Echoes of Time</h3>
+                        <p class="text-sm text-slate-600 line-clamp-2">Sound design mendalam dan color grading sinematik moody.</p>
+                    </div>
+                </div>
+
+                 <!-- Card 4 -->
+                 <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer reveal">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Project 4" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition duration-300 flex items-center justify-center">
+                             <i class="fa-regular fa-circle-play text-4xl text-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-50 group-hover:scale-100"></i>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold text-green-600 uppercase tracking-wider">Documentary</span>
+                            <span class="text-xs text-slate-500">2023</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Nature's Pulse</h3>
+                        <p class="text-sm text-slate-600 line-clamp-2">Penceritaan visual yang lambat, menonjolkan keindahan alam yang raw.</p>
+                    </div>
+                </div>
+
+                <!-- More Button -->
+                <div class="md:col-span-2 lg:col-span-2 flex items-center justify-center reveal">
+                    <a href="#" class="glass-card px-10 py-5 rounded-2xl flex flex-col items-center justify-center w-full h-full text-slate-600 hover:text-slate-900 transition group border border-dashed border-slate-300 hover:border-[#1E88E5]">
+                        <i class="fa-solid fa-arrow-right-long text-3xl mb-2 group-hover:translate-x-2 transition transform"></i>
+                        <span class="font-medium">Lihat Semua Project di Vimeo</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills & Tools Section -->
+    <section id="skills" class="py-20 px-4 relative z-10 bg-gradient-to-b from-transparent to-slate-200/50">
+        <div class="max-w-5xl mx-auto reveal">
+            <div class="glass-card rounded-3xl p-10 md:p-14 text-center">
+                <h2 class="text-3xl font-bold mb-2 text-slate-900">Software & <span class="text-gradient">Keahlian</span></h2>
+                <p class="text-slate-600 mb-10 text-sm md:text-base max-w-xl mx-auto">Alat utama yang saya gunakan setiap hari untuk mengubah footage mentah menjadi mahakarya visual.</p>
+                
+                <div class="flex flex-wrap justify-center gap-6 md:gap-10">
+                    <!-- Tool 1 -->
+                    <div class="flex flex-col items-center gap-3 group">
+                        <div class="w-16 h-16 md:w-20 md:h-20 glass rounded-2xl flex items-center justify-center text-4xl text-[#7b7bfa] group-hover:scale-110 transition group-hover:shadow-[0_0_20px_rgba(123,123,250,0.3)]">
+                            <i class="fa-solid fa-video"></i> 
+                        </div>
+                        <span class="text-sm text-slate-700 font-medium">Premiere Pro</span>
+                    </div>
+                    <!-- Tool 2 -->
+                    <div class="flex flex-col items-center gap-3 group">
+                        <div class="w-16 h-16 md:w-20 md:h-20 glass rounded-2xl flex items-center justify-center text-4xl text-[#c073f8] group-hover:scale-110 transition group-hover:shadow-[0_0_20px_rgba(192,115,248,0.3)]">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> 
+                        </div>
+                        <span class="text-sm text-slate-700 font-medium">After Effects</span>
+                    </div>
+                    <!-- Tool 3 -->
+                    <div class="flex flex-col items-center gap-3 group">
+                        <div class="w-16 h-16 md:w-20 md:h-20 glass rounded-2xl flex items-center justify-center text-4xl text-orange-500 group-hover:scale-110 transition group-hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                            <i class="fa-solid fa-sliders"></i> 
+                        </div>
+                        <span class="text-sm text-slate-700 font-medium">DaVinci Resolve</span>
+                    </div>
+                     <!-- Tool 4 -->
+                     <div class="flex flex-col items-center gap-3 group">
+                        <div class="w-16 h-16 md:w-20 md:h-20 glass rounded-2xl flex items-center justify-center text-4xl text-blue-500 group-hover:scale-110 transition group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                            <i class="fa-solid fa-photo-film"></i>
+                        </div>
+                        <span class="text-sm text-slate-700 font-medium">Color Grading</span>
+                    </div>
+                     <!-- Tool 5 -->
+                     <div class="flex flex-col items-center gap-3 group">
+                        <div class="w-16 h-16 md:w-20 md:h-20 glass rounded-2xl flex items-center justify-center text-4xl text-green-500 group-hover:scale-110 transition group-hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+                            <i class="fa-solid fa-waveform-lines"></i>
+                        </div>
+                        <span class="text-sm text-slate-700 font-medium">Sound Design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-4 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                
+                <div class="reveal">
+                    <h2 class="text-4xl font-bold mb-4 text-slate-900">Punya Ide <br><span class="text-gradient">Brilian?</span></h2>
+                    <p class="text-slate-600 mb-8">Saya selalu terbuka untuk mendiskusikan project video, kolaborasi kreatif, atau sekadar bertukar ide. Jangan ragu untuk menghubungi.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 text-slate-700">
+                            <div class="w-10 h-10 glass rounded-full flex items-center justify-center text-[#1E88E5]">
+                                <i class="fa-regular fa-envelope"></i>
+                            </div>
+                            <span class="font-medium">hello@studiovfx.com</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-slate-700">
+                            <div class="w-10 h-10 glass rounded-full flex items-center justify-center text-[#1E88E5]">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <span class="font-medium">Jakarta, Indonesia (Remote worldwide)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glass Contact Form -->
+                <form class="glass-card rounded-3xl p-8 reveal delay-100" onsubmit="event.preventDefault(); alertCustom('Pesan terkirim! Terima kasih telah menghubungi saya.');">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Nama Lengkap</label>
+                            <input type="text" required class="w-full bg-white/60 border border-white/80 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-[#1E88E5] focus:bg-white/80 transition backdrop-blur-sm placeholder-slate-400" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Email</label>
+                            <input type="email" required class="w-full bg-white/60 border border-white/80 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-[#1E88E5] focus:bg-white/80 transition backdrop-blur-sm placeholder-slate-400" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Ceritakan Project Anda</label>
+                            <textarea rows="4" required class="w-full bg-white/60 border border-white/80 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-[#1E88E5] focus:bg-white/80 transition backdrop-blur-sm placeholder-slate-400 resize-none" placeholder="Saya butuh editor untuk..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full glass-btn-primary py-3 rounded-xl font-bold shadow-lg mt-2">
+                            Kirim Pesan
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200/60 relative z-10 bg-white/40 backdrop-blur-md py-8">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-slate-500 text-sm font-medium">© 2026 StudioVFX. All rights reserved.</p>
+            <div class="flex gap-4">
+                <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white/80 transition">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white/80 transition">
+                    <i class="fa-brands fa-vimeo-v"></i>
+                </a>
+                <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white/80 transition">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Alert Box -->
+    <div id="customAlert" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/20 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card p-6 rounded-2xl max-w-sm w-[90%] text-center transform scale-95 transition-transform duration-300" id="alertBox">
+            <div class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-200">
+                <i class="fa-solid fa-check text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Berhasil!</h3>
+            <p id="alertMessage" class="text-slate-600 text-sm mb-6"></p>
+            <button onclick="closeAlert()" class="glass-btn px-6 py-2 rounded-lg font-medium w-full text-slate-800">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        }
+
+        // Custom Alert Logic
+        function alertCustom(msg) {
+            const alertOverlay = document.getElementById('customAlert');
+            const alertBox = document.getElementById('alertBox');
+            document.getElementById('alertMessage').innerText = msg;
+            
+            alertOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            alertOverlay.classList.add('opacity-100', 'pointer-events-auto');
+            alertBox.classList.remove('scale-95');
+            alertBox.classList.add('scale-100');
+        }
+
+        function closeAlert() {
+            const alertOverlay = document.getElementById('customAlert');
+            const alertBox = document.getElementById('alertBox');
+            
+            alertOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+            alertOverlay.classList.add('opacity-0', 'pointer-events-none');
+            alertBox.classList.remove('scale-100');
+            alertBox.classList.add('scale-95');
+        }
+
+        // Scroll Reveal Animation (Intersection Observer)
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+
+        // Navbar Glass effect on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                // Adjusting background for light mode scroll
+                navbar.firstElementChild.style.background = 'rgba(255, 255, 255, 0.7)';
+                navbar.firstElementChild.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.05)';
+            } else {
+                navbar.firstElementChild.style.background = 'rgba(255, 255, 255, 0.6)';
+                navbar.firstElementChild.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.05)';
+            }
+        });
+    </script>
+</body>
+</html>
